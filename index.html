@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartilla de Sonidos de Animales</title>
+    <style>
+        body {
+            font-family: 'Arial Rounded MT Bold', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .animal-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .animal-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            width: 200px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .animal-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+        }
+        .animal-img {
+            width: 150px;
+            height: 150px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+        .animal-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .instruction {
+            margin-top: 30px;
+            color: #666;
+            max-width: 500px;
+        }
+        /* Efecto al reproducir sonido */
+        .playing {
+            animation: pulse 0.6s infinite;
+            background-color: #e3f2fd;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Aprende los Sonidos de los Animales!</h1>
+    
+    <div class="animal-container">
+        <!-- Tarjeta del Gato -->
+        <div class="animal-card" id="gato">
+            <img src="https://cdn-icons-png.flaticon.com/512/616/616430.png" alt="Gato" class="animal-img">
+            <div class="animal-name">Gato</div>
+            <div>Click para oír "Miau"</div>
+        </div>
+        
+        <!-- Tarjeta del Perro -->
+        <div class="animal-card" id="perro">
+            <img src="https://cdn-icons-png.flaticon.com/512/616/616408.png" alt="Perro" class="animal-img">
+            <div class="animal-name">Perro</div>
+            <div>Click para oír "Guau"</div>
+        </div>
+    </div>
+    
+    <p class="instruction">Haz clic en cualquier animal para escuchar su sonido.</p>
+
+    <script>
+        function playSound(animal) {
+            // Detener sonidos anteriores
+            stopAllSounds();
+            
+            // Reproducir nuevo sonido
+            const sound = new Audio(`audios/${animal}.mp3`);
+            sound.play();
+            
+            // Efecto visual
+            const card = document.getElementById(animal);
+            card.classList.add('playing');
+            
+            // Quitar efecto al terminar
+            sound.onended = () => {
+                card.classList.remove('playing');
+            };
+        }
+        
+        function stopAllSounds() {
+            // Detener todos los elementos de audio
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            // Quitar efectos visuales
+            document.querySelectorAll('.animal-card').forEach(card => {
+                card.classList.remove('playing');
+            });
+        }
+        
+        // Asignar eventos
+        document.getElementById('gato').addEventListener('click', () => playSound('gato'));
+        document.getElementById('perro').addEventListener('click', () => playSound('perro'));
+    </script>
+</body>
+</html>
